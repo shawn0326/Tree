@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script src="Class.js"></script>
+    <script src="Tree.js"></script>
+    <script src="Branch.js"></script>
+    <script src="Leaf.js"></script>
+    <script src="MainBranch.js"></script>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        var CANVAS_HEIGHT = 400;
+        var CANVAS_WIDTH = 600;
+        var canvas = document.getElementById("canvas");
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+        var ctx = canvas.getContext("2d");
+
+        var tree1 = Tree.create(200, 400, 150, ctx);
+
+        var tree2 = Tree.create(300, 400, 200, ctx);
+
+        var tree3 = Tree.create(400, 400, 100, ctx);
+    </script>
+</body>
+</html>
