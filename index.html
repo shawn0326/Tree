@@ -14,18 +14,36 @@
     <canvas id="canvas"></canvas>
 
     <script>
-        var CANVAS_HEIGHT = 400;
+        var CANVAS_HEIGHT = 500;
         var CANVAS_WIDTH = 600;
         var canvas = document.getElementById("canvas");
         canvas.width = CANVAS_WIDTH;
         canvas.height = CANVAS_HEIGHT;
         var ctx = canvas.getContext("2d");
 
-        var tree1 = Tree.create(200, 400, 150, ctx);
+        var tree1;
 
-        var tree2 = Tree.create(300, 400, 200, ctx);
+        function reset(){
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            tree1 = new Tree(ctx, 200, 500, 150);
+//        var tree2 = new Tree(ctx, 300, 500, 200);
+//        var tree3 = new Tree(ctx, 400, 500, 100);
+        }
+        reset();
 
-        var tree3 = Tree.create(400, 400, 100, ctx);
+
+        function render(){
+            ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+            tree1.grow();
+            tree1.draw(ctx);
+//            tree2.grow();
+//            tree2.draw(ctx);
+//            tree3.grow();
+//            tree3.draw(ctx);
+        }
     </script>
+    <input type="button" value="grow" onclick="render()"/>
+    <input type="button" value="reset" onclick="reset()"/>
 </body>
 </html>

@@ -23,6 +23,9 @@ var Branch = Class.extend({
 	// 树枝的父树枝
 	parent: null,
 
+	// 成长率
+	growRate: 1.1,
+
 	ctor: function(distanceFromRoot, rotate, length){
 		this.distanceFromRoot = distanceFromRoot;
 		this.rotate = rotate;
@@ -30,12 +33,15 @@ var Branch = Class.extend({
 
 		this.children = [];
 
-		if(this.length > 40){
-			for(var i = 0; i < 10; i++){
+		// TODO 这里的分支策略需要解耦
+		if(this.length > 50){
+			for(var i = 0; i < Math.round(this.length / 25); i++){
 				this.addChildBranch();
 			}
 		}
+
 	},
+
 	draw: function(ctx){
 		ctx.save();
 		ctx.translate(0, -this.distanceFromRoot);
@@ -47,6 +53,22 @@ var Branch = Class.extend({
 
 		ctx.restore();
 	},
+
+	grow: function(){
+		this.length = Math.round(this.length * this.growRate);
+		for(var i = 0; i < this.children.length; i++){
+			this.children[i].distanceFromRoot = Math.round(this.children[i].distanceFromRoot * this.growRate);
+			this.children[i].grow();
+		}
+
+		// TODO 这里的发芽策略需要解耦
+		if(this.children.length < Math.round(this.length / 25)){
+			for(var j = 0; j < Math.round(this.length / 25) - this.children.length; j++){
+				this.addChildBranch();
+			}
+		}
+	},
+
 	_draw: function(ctx){
 		ctx.lineWidth = this.wide;
 		ctx.strokeStyle = this.color;
@@ -57,6 +79,7 @@ var Branch = Class.extend({
 		ctx.closePath();
 		ctx.stroke();
 	},
+
 	/**
 	 * 添加一条子树枝
 	 */
@@ -71,10 +94,8 @@ var Branch = Class.extend({
 		branch.depth = this.depth + 1;
 		this.children.push(branch);
 	},
+
 	setParent: function(branch){
 		this.parent = branch;
-	},
-	grow: function(){
-		// this.length ++
 	}
 });
