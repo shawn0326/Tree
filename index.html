@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>tree grow test--shawn</title>
 
     <script src="Class.js"></script>
     <script src="Tree.js"></script>
@@ -35,15 +35,34 @@
         function render(){
             ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-            tree1.grow();
+            var flag = tree1.grow();
             tree1.draw(ctx);
 //            tree2.grow();
 //            tree2.draw(ctx);
 //            tree3.grow();
 //            tree3.draw(ctx);
+            return flag;
+        }
+
+        var autoTimer = null;
+        function autoGrow(){
+            var a = render();
+            if(a) {
+                autoTimer = setTimeout(autoGrow, 100);
+            }
+        }
+
+        function stopGrow(){
+            if(autoTimer){
+                clearTimeout(autoTimer);
+            }
         }
     </script>
-    <input type="button" value="grow" onclick="render()"/>
+    <br/>
     <input type="button" value="reset" onclick="reset()"/>
+    <input type="button" value="grow" onclick="render()"/>
+    <input type="button" value="autoGrow" onclick="autoGrow()"/>
+    <input type="button" value="stopGrow" onclick="stopGrow()"/>
+
 </body>
 </html>

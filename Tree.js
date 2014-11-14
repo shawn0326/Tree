@@ -30,9 +30,10 @@ var Tree = Class.extend({
 	grow: function(){
 		if(this._mainBranch.length > this.maxHeight){
 			console.log("达到生长顶峰,不能继续生长！");
-			return false
+			return false;
 		}
 		this._mainBranch.grow();
+		return true;
 	},
 
 	/**
