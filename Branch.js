@@ -16,7 +16,7 @@ var Branch = Class.extend({
 	// 树枝的生长位置距离根部的距离
 	distanceFromRoot: 0,
 	// 树枝深度记录
-	depth: 0,
+	depth: 1,
 
 	// 树枝的子树枝
 	children: null,
@@ -24,7 +24,7 @@ var Branch = Class.extend({
 	parent: null,
 
 	// 成长率
-	growRate: 1.1,
+	growRate: 1,
 
 	ctor: function(distanceFromRoot, rotate, length){
 		this.distanceFromRoot = distanceFromRoot;
@@ -34,12 +34,11 @@ var Branch = Class.extend({
 		this.children = [];
 
 		// TODO 这里的分支策略需要解耦
-		if(this.length > 50){
-			for(var i = 0; i < Math.round(this.length / 25); i++){
+		if(this.length > 40){
+			for(var i = 0; i < this.length / 25; i++){
 				this.addChildBranch();
 			}
 		}
-
 	},
 
 	draw: function(ctx){
@@ -55,26 +54,44 @@ var Branch = Class.extend({
 	},
 
 	grow: function(){
-		this.length = Math.round(this.length * this.growRate);
+		this.updateGrowRate();
+		this.length = this.length * this.growRate;
 		for(var i = 0; i < this.children.length; i++){
-			this.children[i].distanceFromRoot = Math.round(this.children[i].distanceFromRoot * this.growRate);
+			this.children[i].distanceFromRoot = this.children[i].distanceFromRoot * this.growRate;
 			this.children[i].grow();
 		}
 
 		// TODO 这里的发芽策略需要解耦
-		if(this.children.length < Math.round(this.length / 25)){
-			for(var j = 0; j < Math.round(this.length / 25) - this.children.length; j++){
-				this.addChildBranch();
+		if(this.length > 40){
+			if(this.children.length < this.length / 25){
+				for(var j = 0; j < this.length / 25 - this.children.length; j++){
+					this.addChildBranch(10);
+				}
 			}
 		}
 	},
 
+	/**
+	 * 动态调整树枝的生长率
+	 */
+	updateGrowRate: function(){
+		if(this.parent){
+			if(this.length < this.parent.length * 0.5){
+				this.growRate = 1.1;
+			}else{
+				this.growRate = 1.001
+			}
+		}else{
+			this.growRate = 1.01;
+		}
+	},
+
 	_draw: function(ctx){
-		ctx.lineWidth = this.wide;
+		ctx.lineWidth = Math.round(this.wide);
 		ctx.strokeStyle = this.color;
 		ctx.beginPath();
 		ctx.moveTo(0, 0);
-		ctx.lineTo(0, -this.length);
+		ctx.lineTo(0, -Math.round(this.length));
 		//ctx.bezierCurveTo(8,this.length / 4,8, this.length*3 / 4,0, -this.length);
 		ctx.closePath();
 		ctx.stroke();
@@ -83,14 +100,14 @@ var Branch = Class.extend({
 	/**
 	 * 添加一条子树枝
 	 */
-	addChildBranch: function(){
+	addChildBranch: function(length){
 		var rate = Math.random();
 		rate = rate < 0.3 ? rate + 0.3 : rate;
 		var rotate = (Math.random() - 0.5) * Math.PI * 2 / 3;
-		var length = Math.round(this.length * 0.5);
+		length = length || this.length * 0.5;
 		var branch = new Branch(rate * this.length, rotate, length);
 		branch.setParent(this);
-		branch.wide = Math.round(this.wide * 0.5);
+		branch.wide = this.wide * 0.5;
 		branch.depth = this.depth + 1;
 		this.children.push(branch);
 	},
