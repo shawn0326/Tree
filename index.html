@@ -25,7 +25,7 @@
 
         function reset(){
             ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            tree1 = new Tree(ctx, 200, 500, 150);
+            tree1 = new Tree(ctx, 200, 500, 100);
 //        var tree2 = new Tree(ctx, 300, 500, 200);
 //        var tree3 = new Tree(ctx, 400, 500, 100);
         }
@@ -48,7 +48,7 @@
         function autoGrow(){
             var a = render();
             if(a) {
-                autoTimer = setTimeout(autoGrow, 100);
+                autoTimer = setTimeout(autoGrow, 80);
             }
         }
 

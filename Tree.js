@@ -6,10 +6,8 @@
 var Tree = Class.extend({
 	x: 0,
 	y: 0,
-
 	// 树木的主干
 	_mainBranch: null,
-
 	// 树木主干的最高生长限制
 	maxHeight: 300,
 
@@ -18,8 +16,6 @@ var Tree = Class.extend({
 		this.y = y;
 
 		this._mainBranch = new Branch(0, 0, height);
-		// TODO 树干的粗度考虑依树干高度自动改变
-		this._mainBranch.wide = 10;
 
 		this.draw(ctx);
 	},
