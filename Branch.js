@@ -123,12 +123,24 @@ var Branch = Class.extend({
 	},
 
 	/**
+	 * 随机获取子树枝生长位置
+	 */
+	getBranchPosition: function(){
+		return (Math.random() * this.scopeToBranch + (1 - this.scopeToBranch)) * this.length;
+	},
+
+	/**
+	 * 随机获取子树枝生长角度
+	 */
+	getBranchRotate: function(){
+		return 	(Math.random() - 0.5) * Math.PI * 2 / 3;
+	},
+
+	/**
 	 * 添加一条子树枝
 	 */
 	addChildBranch: function(length){
-		var rate = Math.random() * this.scopeToBranch + (1 - this.scopeToBranch);
-		var rotate = (Math.random() - 0.5) * Math.PI * 2 / 3;
-		var branch = new Branch(rate * this.length, rotate, length);
+		var branch = new Branch(this.getBranchPosition(), this.getBranchRotate(), length);
 		branch.setParent(this);
 		branch.depth = this.depth + 1;
 		this.children.push(branch);
